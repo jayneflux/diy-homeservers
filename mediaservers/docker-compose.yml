@@ -1,0 +1,92 @@
+
+version: '3.3'
+services:
+  watchtower:
+    image: containrrr/watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+  filebrowser:
+    image: filebrowser/filebrowser
+    container_name: filebrowser
+    user: 1000:1000
+    ports:
+      - 8081:80
+    volumes:
+      - /storage/plex/:/srv
+      - /storage/plex/config/filebrowser/settings.json:/.filebrowser.json
+      - /storage/plex/config/filebrowser/db:/database
+    restart: always
+  jackett:
+    image: lscr.io/linuxserver/jackett:latest
+    container_name: jackett
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/New_York
+    volumes:
+      - /storage/plex/config/jackett:/config
+    ports:
+      - 9117:9117
+    restart: unless-stopped
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    environment:
+        - PUID=1000
+        - PGID=1000
+        - TZ=America/New_York
+    volumes:
+        - /storage/plex/config/sonarr:/config
+        - /storage/plex/:/storage
+    ports:
+        - 8989:8989
+    restart: unless-stopped
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    environment:
+        - PUID=1000
+        - PGID=1000
+        - TZ=America/New_York
+    volumes:
+        - /storage/plex/config/radarr:/config
+        - /storage/plex/:/storage
+    ports:
+        - 7878:7878
+    restart: unless-stopped
+  transmission:
+    container_name: transmission
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - '/storage/plex/downloads:/storage/downloads'
+    environment:
+      - OPENVPN_PROVIDER=PIA
+      - OPENVPN_CONFIG=ca_toronto
+      - OPENVPN_USERNAME=p7519772
+      - OPENVPN_PASSWORD=MPs3suBP8t
+      - TRANSMISSION_DOWNLOAD_DIR=/storage/downloads
+      - TRANSMISSION_SEED_QUEUE_ENABLED=true
+      - LOCAL_NETWORK=192.168.1.0/24
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+    ports:
+      - '9091:9091'
+    image: haugene/transmission-openvpn
+    restart: unless-stopped
+  plex:
+    image: lscr.io/linuxserver/plex:latest
+    container_name: plex
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - VERSION=docker
+      - PLEX_CLAIM=claim--CNqTZPadM-PUYTWMBBk
+    volumes:
+      - /storage/plex/config/plex:/config
+      - /storage/plex/media:/media:ro
+    ports:
+      - 32400:32400
+    restart: unless-stopped
