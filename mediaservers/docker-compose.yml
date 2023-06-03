@@ -96,6 +96,19 @@ services:
     devices:
       - "/dev/dri:/dev/dri"
     restart: unless-stopped
+  lidarr:
+    image: lscr.io/linuxserver/lidarr:latest
+    container_name: lidarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+        - /storage/plex/config/lidarr:/config
+    ports:
+      - 8686:8686
+    restart: unless-stopped
+  
   autoheal:
     restart: always
     image: willfarrell/autoheal
@@ -103,4 +116,4 @@ services:
       - AUTOHEAL_CONTAINER_LABEL=all
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      
+  
