@@ -105,6 +105,8 @@ services:
       - TZ=Etc/UTC
     volumes:
         - /storage/plex/config/lidarr:/config
+        - /storage/plex/media/music:/music
+        - /storage/plex/downloads:/downloads
     ports:
       - 8686:8686
     restart: unless-stopped
