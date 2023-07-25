@@ -1,0 +1,36 @@
+mqtt:
+  host: 192.168.1.133
+  user: homeassistant
+  password: eeb2goo1ahsh1jieNgohPh1gahvaecheu3phaith5uze7go0dooDee5je6Zah2oh
+
+birdseye:
+  enabled: False
+  mode: continuous
+
+cameras:
+  front_doorbell:
+    ffmpeg:
+      inputs:
+        - path: rtsp://admin:admin123@192.168.1.166:554 # <----- Update for your camera
+          roles:
+            - detect
+            - record
+    rtmp:
+      enabled: False # <-- RTMP should be disabled if your stream is not H264
+    detect:
+      width: 2560 # <---- update for your camera's resolution
+      height: 1920 # <---- update for your camera's resolution
+record:
+  enabled: True
+  retain:
+    days: 7
+    mode: motion
+  events:
+    retain:
+      default: 14
+      mode: active_objects
+
+motion:
+  mask:
+    - 245,1038,681,1064,830,1021,872,921,874,878,916,792,973,681,1065,552,405,579,0,664
+Remove

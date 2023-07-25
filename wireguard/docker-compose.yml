@@ -1,0 +1,25 @@
+version: "3"
+
+services:
+
+  # WireGuard VPN service
+  wireguard:
+    image: linuxserver/wireguard:latest
+    container_name: wireguard
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE #optional
+    volumes:
+      - /storage/wireguard/config:/config
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - PEERS=divam,jorge,cassie
+      - SERVERURL=vpn.westofmoon.com
+      - ALLOWEDIPS=192.168.1.0/24
+    ports:
+      # Port of the WireGuard VPN server
+      - "51820:51820/udp"
+    sysctls:
+      - net.ipv4.ip_forward=1

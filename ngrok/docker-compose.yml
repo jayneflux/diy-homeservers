@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  ngrok:
+    network_mode: "host"
+    image: ngrok/ngrok:alpine
+    restart: unless-stopped
+    environment:
+    - NGROK_AUTHTOKEN=2Dfsle5KgKvbRtVeYVGoXD1bkrj_2PbLHGwf8wXR362T6Ysw6
+    command: tcp 22
