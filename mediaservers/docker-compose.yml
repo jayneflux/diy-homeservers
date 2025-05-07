@@ -61,14 +61,18 @@ services:
       - NET_ADMIN
     volumes:
       - '/storage/plex/downloads:/storage/downloads'
+      - '/storage/incomplete:/data/incomplete'
     environment:
       - OPENVPN_PROVIDER=PIA
       - OPENVPN_CONFIG=ca_toronto
-      - OPENVPN_USERNAME=p7519772
-      - OPENVPN_PASSWORD=MPs3suBP8t
+      - OPENVPN_USERNAME=p2396775
+      - OPENVPN_PASSWORD=Froop!12
       - TRANSMISSION_DOWNLOAD_DIR=/storage/downloads
       - TRANSMISSION_SEED_QUEUE_ENABLED=true
       - LOCAL_NETWORK=192.168.1.0/24
+      - TRANSMISSION_RATIO_LIMIT=3
+      - TRANSMISSION_RATIO_LIMIT_ENABLED=true
+      - TRANSMISSION_DOWNLOAD_QUEUE_SIZE=15
     logging:
       driver: json-file
       options:
@@ -111,7 +115,6 @@ services:
     ports:
       - 8686:8686
     restart: unless-stopped
-  
   autoheal:
     restart: always
     image: willfarrell/autoheal
@@ -119,4 +122,3 @@ services:
       - AUTOHEAL_CONTAINER_LABEL=all
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-  

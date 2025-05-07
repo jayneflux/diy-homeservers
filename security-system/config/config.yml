@@ -1,0 +1,70 @@
+mqtt:
+  host: 192.168.1.135
+  user: homeassistant
+  password: eeb2goo1ahsh1jieNgohPh1gahvaecheu3phaith5uze7go0dooDee5je6Zah2oh
+
+birdseye:
+  enabled: true
+  mode: continuous
+
+cameras:
+  front_porch:
+    ffmpeg:
+      hwaccel_args: preset-vaapi
+      inputs:
+        - path: rtsp://admin:admin123@192.168.1.156:554 # <----- Update for your camera
+          roles:
+            - detect
+            - record
+    detect:
+      width: 2560 # <---- update for your camera's resolution
+      height: 1920 # <---- update for your camera's resolution
+  front_doorbell:
+    ffmpeg:
+      hwaccel_args: preset-vaapi
+      inputs:
+        - path: rtsp://admin:admin123@192.168.1.186:554 # <----- Update for your camera
+          roles:
+            - detect
+            - record
+    detect:
+      width: 2560 # <---- update for your camera's resolution
+      height: 1920 # <---- update for your camera's resolution
+  Backyard:
+    ffmpeg:
+      hwaccel_args: preset-vaapi
+      inputs:
+        - path: rtsp://admin:admin123@192.168.1.224:554 # <----- Update for your camera
+          roles:
+            - detect
+            - record
+    detect:
+      width: 4608 # <---- update for your camera's resolution
+      height: 1728 # <---- update for your camera's resolution
+    motion:
+      mask: 0.45,0.191,0.091,0.416,0.233,0,0.882,0.005,0.909,0.416
+record:
+  enabled: true
+  retain:
+    days: 7
+    mode: motion
+  alerts:
+    retain:
+      days: 14
+  detections:
+    retain:
+      days: 14
+detectors:
+  ov:
+    type: openvino
+    device: GPU
+
+model:
+  width: 300
+  height: 300
+  input_tensor: nhwc
+  input_pixel_format: bgr
+  path: /openvino-model/ssdlite_mobilenet_v2.xml
+  labelmap_path: /openvino-model/coco_91cl_bkgr.txt
+
+version: 0.15-1

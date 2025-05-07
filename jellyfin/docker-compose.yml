@@ -1,0 +1,26 @@
+
+version: '3.3'
+services:
+  jellyfin:
+    image: lscr.io/linuxserver/jellyfin:latest
+    restart: unless-stopped
+    container_name: jellyfin
+    network_mode: 'host'
+    # Ports are ignored in host mode, which was needed for some stuff to work.
+    ports:
+      - 8096:8096 # Web UI
+      - 8920:8920 # Optional HTTPS
+      - 7359:7359/udp # Optional Live TV/DVR
+      - 1900:1900/udp # Optional DLNA
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - DOCKER_MODS=linuxserver/mods:jellyfin-opencl-intel
+    volumes:
+      - ./config:/config
+      - /storage/plex/media:/data/media
+    group_add:
+      - '226'
+    devices:
+      - /dev/dri/:/dev/dri/

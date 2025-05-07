@@ -8,5 +8,6 @@ services:
       - PGID=1000
       - TZ=Etc/UTC
     volumes:
-      - /home/divam/docker-services/ddns:/etc/config
+      - /home/divam/docker-services/ddns:/config
+    network_mode: host
     restart: unless-stopped
